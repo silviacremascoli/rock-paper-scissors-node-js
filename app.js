@@ -3,36 +3,39 @@ const fs = require("fs");
 const http = require("http");
 
 // Create a server
-const server = http.createServer((req, res) => {});
-// Create a url object with request url and host name
-const url = new URL((request.url, `http://${request.headers.host}`) => {
-// Create a switch statement based on pathname of url
-    switch(url.pathname) {
-        case '/':
-            // Check if request method is GET
-            if (request.method === 'GET') {
-                // Get value of 'name' query
-                const name = url.searchParams.get('name');
-                console.log(name);
-                // Write response header
-                response.writeHeader(200, {
-                    'Content-Type': 'text/html'
-                })
-                // Pipe index.html to response
-                fs.createReadStream('./index.html').pipe(response);
-            }
-            break;
-        default:    
-    }
+const server = http.createServer((request, response) => {
+  // Create a url object with request url and host name
+  const url = new URL(request.url, `http://${request.headers.host}`);
+  // Create a switch statement based on pathname of url
+  switch (url.pathname) {
+    case "/":
+      // Check if request method is GET
+      if (request.method === "GET") {
+        // Get value of 'name' query
+        const name = url.searchParams.get("name");
+        console.log(name);
+        // Write response header
+        response.writeHeader(200, {
+          "Content-Type": "text/html",
+        });
+        // Pipe index.html to response
+        fs.createReadStream("index.html").pipe(response);
+        break;
+      } // Check if request is POST and if so, run handlePostResponse()
+      else if (request.method === "POST") {
+        handlePostResponse(req, res);
+        break;
+      }
+
+    default:
+      // Write response header
+      response.writeHeader(404, {
+        "Content-Type": "text/html",
+      });
+      // Pipe 404.html to response
+      fs.createReadStream("404.html").pipe(response);
+  }
 });
-
-
-
-// Check if request is POST and if so, run handlePostResponse()
-
-// Write response header
-
-// Pipe 404.html to response
 
 // Have server listen at port 4001
 
