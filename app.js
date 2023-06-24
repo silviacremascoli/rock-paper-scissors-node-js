@@ -13,7 +13,7 @@ const server = http.createServer((request, response) => {
       if (request.method === "GET") {
         // Get value of 'name' query
         const name = url.searchParams.get("name");
-        console.log(name);
+        console.log(`User ${name} has started playing!`);
         // Write response header
         response.writeHead(200, {
           "Content-Type": "text/html",
@@ -34,6 +34,7 @@ const server = http.createServer((request, response) => {
       });
       // Pipe 404.html to response
       fs.createReadStream("404.html").pipe(response);
+      break;
   }
 });
 
