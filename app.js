@@ -15,7 +15,7 @@ const server = http.createServer((request, response) => {
         const name = url.searchParams.get("name");
         console.log(name);
         // Write response header
-        response.writeHeader(200, {
+        response.writeHead(200, {
           "Content-Type": "text/html",
         });
         // Pipe index.html to response
@@ -23,13 +23,13 @@ const server = http.createServer((request, response) => {
         break;
       } // Check if request is POST and if so, run handlePostResponse()
       else if (request.method === "POST") {
-        handlePostResponse(req, res);
+        handlePostResponse(request, response);
         break;
       }
 
     default:
       // Write response header
-      response.writeHeader(404, {
+      response.writeHead(404, {
         "Content-Type": "text/html",
       });
       // Pipe 404.html to response
@@ -38,7 +38,11 @@ const server = http.createServer((request, response) => {
 });
 
 // Have server listen at port 4001
-
+server.listen(4001, () => {
+  console.log(
+    `The server is listening at: http://localhost:${server.address().port}`
+  );
+});
 // Function for handling POST responses
 function handlePostResponse(request, response) {
   request.setEncoding("utf8");
